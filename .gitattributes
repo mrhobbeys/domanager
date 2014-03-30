@@ -1,0 +1,8 @@
+*.jpg binary
+*.png binary
+*.ico binary
+*.exe binary
+*.dll binary
+*.lib binary
+*.sys binary
+*.pyd binary

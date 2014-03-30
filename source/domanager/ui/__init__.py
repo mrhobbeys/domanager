@@ -1,0 +1,1 @@
+from domanager.ui.TrayIcon import TrayIcon
