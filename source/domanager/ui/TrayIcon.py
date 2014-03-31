@@ -1,4 +1,4 @@
-import sys, os
+import sys, os, subprocess
 from PyQt4 import QtGui, QtCore
 from PyQt4.QtCore import Qt
 
@@ -76,6 +76,10 @@ class TrayIcon(QtGui.QSystemTrayIcon):
         copyIPAction.setIcon(self._icon("ip.png"))
         copyIPAction.triggered.connect(lambda y, x=idx: self._ipToClipboard(x))
 
+        sshAction = QtGui.QAction("Open SSH connection", self)
+        sshAction.setIcon(self._icon("ssh.png"))
+        sshAction.triggered.connect(lambda y, x=idx: self._openSSH(x))
+
         resetRootAction = QtGui.QAction("Reset root password", self)
         resetRootAction.setIcon(self._icon("password.png"))
         resetRootAction.triggered.connect(lambda y, x=idx: self._resetRoot(x))
@@ -90,8 +94,9 @@ class TrayIcon(QtGui.QSystemTrayIcon):
 
         dropletMenu = QtGui.QMenu()
         dropletMenu.addAction(copyIPAction)
-        dropletMenu.addAction(resetRootAction)
+        dropletMenu.addAction(sshAction)
         dropletMenu.addSeparator()
+        dropletMenu.addAction(resetRootAction)
         dropletMenu.addAction(renameDropletAction)
 
         if self._dInfos[idx]['status'] == 'active':
@@ -146,6 +151,11 @@ class TrayIcon(QtGui.QSystemTrayIcon):
             dropletId = self._dInfos[idx]['id']
             result = self._doHandler.resetRoot(dropletId)
             self._checkResult("Reset root", dropletName, result)
+
+    def _openSSH(self, idx):
+        ipAddress = self._dInfos[idx]['ip_address']
+        command = "osascript -e 'tell application \"Terminal\" to do script \"ssh root@%s\"'"
+        os.system(command % ipAddress)
 
     def _powerOn(self, idx):
         dropletName = self._dInfos[idx]['name']
