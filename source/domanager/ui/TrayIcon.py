@@ -2,6 +2,7 @@ import sys, os
 from PyQt4 import QtGui, QtCore
 from PyQt4.QtCore import Qt
 
+from domanager.config import config
 from domanager.resources import rPath
 from domanager.core import DOHandler, UpdateThread
 from domanager.ui.PreferencesDialog import PreferencesDialog
@@ -57,6 +58,12 @@ class TrayIcon(QtGui.QSystemTrayIcon):
         self._updateThread = UpdateThread(self)
         self._updateThread.updated.connect(self._updateMenu)
         self._updateThread.start()
+
+        clientId = config.value('clientId', "")
+        apiKey = config.value('apiKey', "")
+
+        if not clientId or not apiKey:
+            self._settings()
 
     def _icon(self, filename):
         return QtGui.QIcon(rPath(filename))
@@ -155,17 +162,21 @@ class TrayIcon(QtGui.QSystemTrayIcon):
     def _updateMenu(self, result=None):
         self._menu.clear()
 
-        import pprint
-        pprint.pprint(result)
+        # import pprint
+        # pprint.pprint(result)
 
         if not result:
             infoMsg = "Connecting..."
+            self.setIcon(self._icon("main_logo_gray.png"))
         elif "OK" in result['status']:
             infoMsg = "Connected"
+            self.setIcon(self._icon("main_logo_gray.png"))
         elif "ERROR" in result['status']:
             infoMsg = result['message']
+            self.setIcon(self._icon("main_logo_gray_error.png"))
         else:
             infoMsg = result['status']
+            self.setIcon(self._icon("main_logo_gray_error.png"))
 
         infoAction = QtGui.QAction("  Status: %s" % infoMsg, self)
         infoAction.setEnabled(False)

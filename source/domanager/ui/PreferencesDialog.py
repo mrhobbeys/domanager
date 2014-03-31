@@ -9,7 +9,7 @@ class PreferencesDialog(QtGui.QDialog):
     def __init__(self, parent=None):
         super(PreferencesDialog, self).__init__(parent)
         self.setWindowIcon(self._icon("settings.png"))
-        self.setWindowTitle("Preferences")
+        self.setWindowTitle("DO Manager: Preferences")
 
         self._layout = QtGui.QVBoxLayout(self)
         self._layout.setContentsMargins(5, 5, 5, 5)
@@ -51,9 +51,13 @@ class PreferencesDialog(QtGui.QDialog):
         self._cancelButton.clicked.connect(self.close)
         self._okButton.clicked.connect(self._onOK)
 
+        self._clientIDBox.setFocus()
+
     def _onOK(self):
-        config.setValue('clientId', self._clientIDBox.text())
-        config.setValue('apiKey', self._apiKeyBox.text())
+        clientId = self._clientIDBox.text()
+        apiKey = self._apiKeyBox.text()
+        config.setValue('clientId', clientId)
+        config.setValue('apiKey', apiKey)
         self.close()
 
     def _icon(self, filename):
