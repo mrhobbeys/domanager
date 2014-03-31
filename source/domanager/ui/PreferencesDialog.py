@@ -10,6 +10,7 @@ class PreferencesDialog(QtGui.QDialog):
         super(PreferencesDialog, self).__init__(parent)
         self.setWindowIcon(self._icon("settings.png"))
         self.setWindowTitle("DO Manager: Preferences")
+        self.setWindowFlags(self.windowFlags() | Qt.WindowStaysOnTopHint)
 
         self._layout = QtGui.QVBoxLayout(self)
         self._layout.setContentsMargins(5, 5, 5, 5)

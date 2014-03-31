@@ -10,12 +10,12 @@ from domanager.ui.AboutDialog import AboutDialog
 from domanager.ui.RenameDialog import RenameDialog
 
 class TrayIcon(QtGui.QSystemTrayIcon):
-    def __init__(self):
-        super(TrayIcon, self).__init__()
+    def __init__(self, mWindow):
+        super(TrayIcon, self).__init__(mWindow)
         self.setIcon(self._icon("main_logo_gray.png"))
         self.setVisible(True)
 
-        self._mainWindow = QtGui.QMainWindow()
+        self._mainWindow = mWindow
         self._mainWindow.setWindowIcon(self._icon("main_logo_color.png"))
 
         self._doHandler = DOHandler()

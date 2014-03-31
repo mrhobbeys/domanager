@@ -10,6 +10,7 @@ class AboutDialog(QtGui.QDialog):
         super(AboutDialog, self).__init__(parent)
         self.setWindowTitle("About")
         self.setWindowIcon(self._icon("about.png"))
+        self.setWindowFlags(self.windowFlags() | Qt.WindowStaysOnTopHint)
 
         self._picLabel = QtGui.QLabel(self)
         self._picLabel.setAlignment(Qt.AlignCenter)

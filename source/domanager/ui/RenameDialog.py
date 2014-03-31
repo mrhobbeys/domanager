@@ -8,6 +8,7 @@ class RenameDialog(QtGui.QDialog):
         super(RenameDialog, self).__init__(parent)
         self.setWindowIcon(self._icon("rename.png"))
         self.setWindowTitle("Rename %s" % oldName)
+        self.setWindowFlags(self.windowFlags() | Qt.WindowStaysOnTopHint)
 
         self._layout = QtGui.QVBoxLayout(self)
         self._layout.setContentsMargins(5, 5, 5, 5)
