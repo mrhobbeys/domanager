@@ -6,6 +6,7 @@ from domanager.config import config
 from domanager.resources import rPath
 from domanager.core import DOHandler, UpdateThread
 from domanager.ui.PreferencesDialog import PreferencesDialog
+from domanager.ui.AboutDialog import AboutDialog
 
 class TrayIcon(QtGui.QSystemTrayIcon):
     def __init__(self):
@@ -26,6 +27,7 @@ class TrayIcon(QtGui.QSystemTrayIcon):
 
         self._aboutAction = QtGui.QAction("About", self)
         self._aboutAction.setIcon(self._icon("about.png"))
+        self._aboutAction.triggered.connect(self._about)
 
         self._settingsAction = QtGui.QAction("Preferences", self)
         self._settingsAction.setIcon(self._icon("settings.png"))
@@ -233,6 +235,12 @@ class TrayIcon(QtGui.QSystemTrayIcon):
         pd.showNormal()
         pd.activateWindow()
         pd.exec_()
+
+    def _about(self):
+        ad = AboutDialog(self._mainWindow)
+        ad.showNormal()
+        ad.activateWindow()
+        ad.exec_()
 
     def _quit(self):
         sys.exit(0)

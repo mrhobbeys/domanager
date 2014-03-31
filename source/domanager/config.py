@@ -4,6 +4,8 @@ from PyQt4.QtCore import Qt
 
 class ConfigClass(object):
 
+    version = "1.0"
+
     settings = QtCore.QSettings(QtCore.QSettings.NativeFormat,
                                 QtCore.QSettings.UserScope,
                                 "aoizora.org", "domanager")
