@@ -26,10 +26,18 @@ class PreferencesDialog(QtGui.QDialog):
         self._apiKeyBox.setText(apiKey)
         self._apiKeyBox.setMinimumWidth(250)
 
+        self._sshUserNameBox = QtGui.QLineEdit(self)
+        userName = config.value('userName', "root")
+        validator = QtGui.QRegExpValidator(QtCore.QRegExp("[ -~]*"), self._sshUserNameBox)
+        self._sshUserNameBox.setValidator(validator)
+        self._sshUserNameBox.setText(userName)
+        self._sshUserNameBox.setMinimumWidth(250)
+
         self._formlayout = QtGui.QFormLayout()
         self._formlayout.setContentsMargins(5, 5, 5, 5)
         self._formlayout.addRow("Client ID: ", self._clientIDBox)
         self._formlayout.addRow("API Key: ", self._apiKeyBox)
+        self._formlayout.addRow("SSH User: ", self._sshUserNameBox)
 
         self._okButton = QtGui.QPushButton("OK")
         self._cancelButton = QtGui.QPushButton("Cancel")
@@ -57,8 +65,10 @@ class PreferencesDialog(QtGui.QDialog):
     def _onOK(self):
         clientId = self._clientIDBox.text()
         apiKey = self._apiKeyBox.text()
+        userName = self._sshUserNameBox.text()
         config.setValue('clientId', clientId)
         config.setValue('apiKey', apiKey)
+        config.setValue('userName', userName)
         self.close()
 
     def _icon(self, filename):

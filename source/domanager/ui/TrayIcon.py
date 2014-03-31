@@ -153,9 +153,10 @@ class TrayIcon(QtGui.QSystemTrayIcon):
             self._checkResult("Reset root", dropletName, result)
 
     def _openSSH(self, idx):
+        userName = config.value('userName', "root")
         ipAddress = self._dInfos[idx]['ip_address']
-        command = "osascript -e 'tell application \"Terminal\" to do script \"ssh root@%s\"'"
-        os.system(command % ipAddress)
+        command = "osascript -e 'tell application \"Terminal\" to do script \"ssh %s@%s\"'"
+        os.system(command % (userName, ipAddress))
 
     def _powerOn(self, idx):
         dropletName = self._dInfos[idx]['name']
