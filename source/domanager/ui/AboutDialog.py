@@ -8,7 +8,7 @@ from domanager.config import config
 class AboutDialog(QtGui.QDialog):
     def __init__(self, parent=None):
         super(AboutDialog, self).__init__(parent)
-        self.setWindowTitle("About")
+        self.setWindowTitle("About DO Manager")
         self.setWindowIcon(self._icon("about.png"))
         self.setWindowFlags(self.windowFlags() | Qt.WindowStaysOnTopHint)
 
