@@ -72,7 +72,7 @@ class TrayIcon(QtGui.QSystemTrayIcon):
         return QtGui.QIcon(rPath(filename))
 
     def _dropletMenu(self, idx):
-        copyIPAction = QtGui.QAction("Public IP to clipboard", self)
+        copyIPAction = QtGui.QAction("Copy IP to clipboard", self)
         copyIPAction.setIcon(self._icon("ip.png"))
         copyIPAction.triggered.connect(lambda y, x=idx: self._ipToClipboard(x))
 
@@ -96,8 +96,8 @@ class TrayIcon(QtGui.QSystemTrayIcon):
         dropletMenu.addAction(copyIPAction)
         dropletMenu.addAction(sshAction)
         dropletMenu.addSeparator()
-        dropletMenu.addAction(resetRootAction)
         dropletMenu.addAction(renameDropletAction)
+        dropletMenu.addAction(resetRootAction)
 
         if self._dInfos[idx]['status'] == 'active':
             rebootAction = QtGui.QAction("Power cycle", self)
