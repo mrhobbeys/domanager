@@ -47,3 +47,9 @@ class DOHandler(object):
         url = "/droplets/%s/destroy/" % dropletId
         url += "?client_id=%s&api_key=%s"
         return self._request("GET", url)
+
+    def rename(self, dropletId, name):
+        url = "/droplets/%s/rename/" % dropletId
+        url += "?client_id=%s&api_key=%s"
+        url += "&name=%s" % name
+        return self._request("GET", url)

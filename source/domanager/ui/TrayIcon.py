@@ -7,6 +7,7 @@ from domanager.resources import rPath
 from domanager.core import DOHandler, UpdateThread
 from domanager.ui.PreferencesDialog import PreferencesDialog
 from domanager.ui.AboutDialog import AboutDialog
+from domanager.ui.RenameDialog import RenameDialog
 
 class TrayIcon(QtGui.QSystemTrayIcon):
     def __init__(self):
@@ -37,7 +38,7 @@ class TrayIcon(QtGui.QSystemTrayIcon):
         self._createAction.setIcon(self._icon("create.png"))
         self._createAction.triggered.connect(self._createDroplet)
 
-        self._bugAction = QtGui.QAction("Report bug", self)
+        self._bugAction = QtGui.QAction("Report bug/request", self)
         self._bugAction.setIcon(self._icon("bug.png"))
 
         self._updateAction = QtGui.QAction("Check for update", self)
@@ -79,6 +80,10 @@ class TrayIcon(QtGui.QSystemTrayIcon):
         resetRootAction.setIcon(self._icon("password.png"))
         resetRootAction.triggered.connect(lambda y, x=idx: self._resetRoot(x))
 
+        renameDropletAction = QtGui.QAction("Rename", self)
+        renameDropletAction.setIcon(self._icon("rename.png"))
+        renameDropletAction.triggered.connect(lambda y, x=idx: self._renameDroplet(x))
+
         destroyDropletAction = QtGui.QAction("Destroy", self)
         destroyDropletAction.setIcon(self._icon("destroy.png"))
         destroyDropletAction.triggered.connect(lambda y, x=idx: self._destroyDroplet(x))
@@ -87,6 +92,7 @@ class TrayIcon(QtGui.QSystemTrayIcon):
         dropletMenu.addAction(copyIPAction)
         dropletMenu.addAction(resetRootAction)
         dropletMenu.addSeparator()
+        dropletMenu.addAction(renameDropletAction)
 
         if self._dInfos[idx]['status'] == 'active':
             rebootAction = QtGui.QAction("Power cycle", self)
@@ -119,6 +125,18 @@ class TrayIcon(QtGui.QSystemTrayIcon):
         else:
             msg = "Failed to send %s command to %s (%s)" % (dropletName, commandName.lower(), result['status'])
             self._message(msg, error=True)
+
+    def _renameDroplet(self, idx):
+        dropletName = self._dInfos[idx]['name']
+        dropletId = self._dInfos[idx]['id']
+        rd = RenameDialog(dropletName, self._mainWindow)
+        rd.showNormal()
+        rd.activateWindow()
+        rd.exec_()
+        if rd.result:
+            result = self._doHandler.rename(dropletId, rd.result)
+            self._checkResult("Rename", dropletName, result)
+
 
     def _resetRoot(self, idx):
         dropletName = self._dInfos[idx]['name']
