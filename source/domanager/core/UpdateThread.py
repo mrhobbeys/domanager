@@ -16,4 +16,4 @@ class UpdateThread(QtCore.QThread):
         while True:
             result = self._doHandler.info()
             self.updated.emit(result)
-            self.sleep(5)
+            sleep(0.5)

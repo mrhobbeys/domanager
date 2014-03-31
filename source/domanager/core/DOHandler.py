@@ -1,19 +1,23 @@
 
 import httplib, json
+from domanager.config import config
 
 class DOHandler(object):
     def __init__(self):
         self._url = "api.digitalocean.com"
-        self._clientId = "qLBGBATXxiEYFNA3JXMvr"
-        self._apiKey = "c5d09dc0e5b22763d18a3ea76be6048b"
 
     def _request(self, method, request):
-        request = request % (self._clientId, self._apiKey)
+        clientId = config.value('clientId', "")
+        apiKey = config.value('apiKey', "")
+        request = request % (clientId, apiKey)
         conn = httplib.HTTPSConnection(self._url)
         conn.putrequest(method, request)
         conn.endheaders()
         response = conn.getresponse()
-        return json.loads(response.read())
+        try:
+            return json.loads(response.read())
+        except:
+            return
 
     def info(self):
         url = "/droplets/?client_id=%s&api_key=%s"

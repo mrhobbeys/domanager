@@ -1,9 +1,10 @@
-import sys
+import sys, os
 from PyQt4 import QtGui, QtCore
 from PyQt4.QtCore import Qt
 
 from domanager.resources import rPath
 from domanager.core import DOHandler, UpdateThread
+from domanager.ui.PreferencesDialog import PreferencesDialog
 
 class TrayIcon(QtGui.QSystemTrayIcon):
     def __init__(self):
@@ -22,14 +23,36 @@ class TrayIcon(QtGui.QSystemTrayIcon):
         self._quitAction.setIcon(self._icon("quit.png"))
         self._quitAction.triggered.connect(self._quit)
 
-        self._aboutAction = QtGui.QAction("About...", self)
+        self._aboutAction = QtGui.QAction("About", self)
         self._aboutAction.setIcon(self._icon("about.png"))
 
-        self._settingsAction = QtGui.QAction("Settings...", self)
+        self._settingsAction = QtGui.QAction("Preferences", self)
         self._settingsAction.setIcon(self._icon("settings.png"))
+        self._settingsAction.triggered.connect(self._settings)
+
+        self._createAction = QtGui.QAction("Create droplet (web)", self)
+        self._createAction.setIcon(self._icon("create.png"))
+        self._createAction.triggered.connect(self._createDroplet)
+
+        self._bugAction = QtGui.QAction("Report bug", self)
+        self._bugAction.setIcon(self._icon("bug.png"))
+
+        self._updateAction = QtGui.QAction("Check for update", self)
+        self._updateAction.setIcon(self._icon("update.png"))
+
+        self._helpMenu = QtGui.QMenu()
+        self._helpMenu.addAction(self._updateAction)
+        self._helpMenu.addAction(self._bugAction)
+        self._helpMenu.addAction(self._aboutAction)
+
+        self._helpAction = QtGui.QAction("Help", self)
+        self._helpAction.setIcon(self._icon("help.png"))
+        self._helpAction.setMenu(self._helpMenu)
 
         self._menu = QtGui.QMenu()
         self.setContextMenu(self._menu)
+
+        self._updateMenu()
 
         self._updateThread = UpdateThread(self)
         self._updateThread.updated.connect(self._updateMenu)
@@ -129,35 +152,47 @@ class TrayIcon(QtGui.QSystemTrayIcon):
             result = self._doHandler.powerOff(dropletId)
             self._checkResult("Power off", dropletName, result)
 
-    def _updateMenu(self, result):
+    def _updateMenu(self, result=None):
         self._menu.clear()
 
         import pprint
         pprint.pprint(result)
 
-        infoAction = QtGui.QAction("  Status: %s" % result['status'], self)
-        infoAction.setEnabled(False)
+        if not result:
+            infoMsg = "Connecting..."
+        elif "OK" in result['status']:
+            infoMsg = "Connected"
+        elif "ERROR" in result['status']:
+            infoMsg = result['message']
+        else:
+            infoMsg = result['status']
 
+        infoAction = QtGui.QAction("  Status: %s" % infoMsg, self)
+        infoAction.setEnabled(False)
         self._menu.addAction(infoAction)
         self._menu.addSeparator()
 
-        if 'droplets' in result:
-            self._dInfos = result['droplets']
-            for idx, dInfo in enumerate(self._dInfos):
-                dropletAction = QtGui.QAction(dInfo['name'], self)
+        if result:
+            if 'droplets' in result:
+                self._dInfos = result['droplets']
+                for idx, dInfo in enumerate(self._dInfos):
+                    dropletAction = QtGui.QAction(dInfo['name'], self)
 
-                if dInfo['status'] == 'active':
-                    dropletAction.setIcon(self._icon("active.png"))
-                else:
-                    dropletAction.setIcon(self._icon("inactive.png"))
+                    if dInfo['status'] == 'active':
+                        dropletAction.setIcon(self._icon("active.png"))
+                    else:
+                        dropletAction.setIcon(self._icon("inactive.png"))
 
-                dropletAction.setMenu(self._dropletMenu(idx))
-                self._menu.addAction(dropletAction)
+                    dropletAction.setMenu(self._dropletMenu(idx))
+                    self._menu.addAction(dropletAction)
 
-            self._menu.addSeparator()
+                self._menu.addSeparator()
 
+        self._menu.addAction(self._createAction)
+        self._menu.addSeparator()
         self._menu.addAction(self._settingsAction)
-        self._menu.addAction(self._aboutAction)
+        self._menu.addAction(self._helpAction)
+        self._menu.addSeparator()
         self._menu.addAction(self._quitAction)
 
     def _ipToClipboard(self, idx):
@@ -170,14 +205,23 @@ class TrayIcon(QtGui.QSystemTrayIcon):
 
     def _message(self, msg, error=False):
         if error:
-            QtGui.QMessageBox.warning(self._mainWindow, "DigitalOcean Manager", msg)
+            QtGui.QMessageBox.warning(self._mainWindow, "DO Manager", msg)
         else:
-            QtGui.QMessageBox.information(self._mainWindow, "DigitalOcean Manager", msg)
+            QtGui.QMessageBox.information(self._mainWindow, "DO Manager", msg)
 
     def _question(self, msg):
-        reply = QtGui.QMessageBox.question(self._mainWindow, "DigitalOcean Manager", msg,
+        reply = QtGui.QMessageBox.question(self._mainWindow, "DO Manager", msg,
                                            QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
         return reply == QtGui.QMessageBox.Yes
+
+    def _createDroplet(self):
+        os.system("open https://cloud.digitalocean.com/droplets/new")
+
+    def _settings(self):
+        pd = PreferencesDialog(self._mainWindow)
+        pd.showNormal()
+        pd.activateWindow()
+        pd.exec_()
 
     def _quit(self):
         sys.exit(0)
