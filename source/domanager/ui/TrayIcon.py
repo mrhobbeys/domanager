@@ -3,7 +3,7 @@ from PyQt4 import QtGui, QtCore
 from PyQt4.QtCore import Qt
 
 from domanager.resources import rPath
-from domanager.core import DOHandler
+from domanager.core import DOHandler, UpdateThread
 
 class TrayIcon(QtGui.QSystemTrayIcon):
     def __init__(self):
@@ -16,7 +16,6 @@ class TrayIcon(QtGui.QSystemTrayIcon):
 
         self._doHandler = DOHandler()
 
-        self._updateTimeout = 10
         self._dInfos = []
 
         self._quitAction = QtGui.QAction("Quit", self)
@@ -32,11 +31,9 @@ class TrayIcon(QtGui.QSystemTrayIcon):
         self._menu = QtGui.QMenu()
         self.setContextMenu(self._menu)
 
-        self._updateMenu()
-
-        self._updateTimer = QtCore.QTimer()
-        self._updateTimer.timeout.connect(self._updateMenu)
-        self._updateTimer.start(self._updateTimeout*1000)
+        self._updateThread = UpdateThread(self)
+        self._updateThread.updated.connect(self._updateMenu)
+        self._updateThread.start()
 
     def _icon(self, filename):
         return QtGui.QIcon(rPath(filename))
@@ -132,9 +129,8 @@ class TrayIcon(QtGui.QSystemTrayIcon):
             result = self._doHandler.powerOff(dropletId)
             self._checkResult("Power off", dropletName, result)
 
-    def _updateMenu(self):
+    def _updateMenu(self, result):
         self._menu.clear()
-        result = self._doHandler.info()
 
         import pprint
         pprint.pprint(result)

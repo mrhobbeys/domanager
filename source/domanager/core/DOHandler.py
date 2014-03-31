@@ -4,8 +4,8 @@ import httplib, json
 class DOHandler(object):
     def __init__(self):
         self._url = "api.digitalocean.com"
-        self._clientId = ""
-        self._apiKey = ""
+        self._clientId = "qLBGBATXxiEYFNA3JXMvr"
+        self._apiKey = "c5d09dc0e5b22763d18a3ea76be6048b"
 
     def _request(self, method, request):
         request = request % (self._clientId, self._apiKey)
