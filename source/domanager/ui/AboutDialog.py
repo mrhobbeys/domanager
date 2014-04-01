@@ -25,7 +25,7 @@ class AboutDialog(QtGui.QDialog):
 
         aboutBottomText = "<qt>"
         aboutBottomText += "<hr>"
-        aboutBottomText += "written by <a href=\"link\">Itoh Nobue (Artur M.)</a>"
+        aboutBottomText += "made by <a href=\"link\">Itoh Nobue (Artur M.)</a>"
         aboutBottomText += "</qt>"
 
         self._aboutBoxTop = QtGui.QLabel(self)

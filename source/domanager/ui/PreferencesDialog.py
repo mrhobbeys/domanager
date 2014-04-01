@@ -13,7 +13,7 @@ class PreferencesDialog(QtGui.QDialog):
         self.setWindowFlags(self.windowFlags() | Qt.WindowStaysOnTopHint)
 
         self._layout = QtGui.QVBoxLayout(self)
-        self._layout.setContentsMargins(5, 5, 5, 5)
+        self._layout.setContentsMargins(5, 15, 5, 5)
 
         self._clientIDBox = QtGui.QLineEdit(self)
         clientId = config.value('clientId', "")
@@ -33,11 +33,10 @@ class PreferencesDialog(QtGui.QDialog):
         self._sshUserNameBox.setText(userName)
         self._sshUserNameBox.setMinimumWidth(250)
 
-        self._formlayout = QtGui.QFormLayout()
-        self._formlayout.setContentsMargins(5, 5, 5, 5)
-        self._formlayout.addRow("Client ID: ", self._clientIDBox)
-        self._formlayout.addRow("API Key: ", self._apiKeyBox)
-        self._formlayout.addRow("SSH User: ", self._sshUserNameBox)
+        self._formLayout = QtGui.QFormLayout()
+        self._formLayout.setContentsMargins(5, 5, 5, 5)
+        self._formLayout.addRow("Client ID: ", self._clientIDBox)
+        self._formLayout.addRow("API Key: ", self._apiKeyBox)
 
         self._okButton = QtGui.QPushButton("OK")
         self._cancelButton = QtGui.QPushButton("Cancel")
@@ -54,7 +53,23 @@ class PreferencesDialog(QtGui.QDialog):
         self._buttonsLayout.addWidget(self._okButton)
         self._buttonsLayout.addWidget(self._cancelButton)
 
-        self._layout.addLayout(self._formlayout)
+        self._formWidget = QtGui.QWidget(self)
+        self._formWidget.setContentsMargins(0, 0, 0, 0)
+        self._formWidget.setLayout(self._formLayout)
+
+        self._sshLayout = QtGui.QFormLayout()
+        self._sshLayout.setContentsMargins(5, 5, 5, 5)
+        self._sshLayout.addRow("SSH User: ", self._sshUserNameBox)
+
+        self._sshWidget = QtGui.QWidget(self)
+        self._sshWidget.setContentsMargins(0, 0, 0, 0)
+        self._sshWidget.setLayout(self._sshLayout)
+
+        self._tabs = QtGui.QTabWidget(self)
+        self._tabs.addTab(self._formWidget, "General")
+        self._tabs.addTab(self._sshWidget, "SSH")
+
+        self._layout.addWidget(self._tabs)
         self._layout.addLayout(self._buttonsLayout)
 
         self._cancelButton.clicked.connect(self.close)
