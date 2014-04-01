@@ -90,4 +90,4 @@ class PreferencesDialog(QtGui.QDialog):
         return QtGui.QIcon(rPath(filename))
 
     def _getKeys(self):
-        os.system("open https://cloud.digitalocean.com/api_access")
+        os.system("%s https://cloud.digitalocean.com/api_access" % config.openCommand)

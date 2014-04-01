@@ -46,4 +46,5 @@ class AboutDialog(QtGui.QDialog):
         return QtGui.QIcon(rPath(filename))
 
     def _openInfo(self):
-        os.system("open https://github.com/itohnobue")
+        self.close()
+        os.system("%s https://github.com/itohnobue" % config.openCommand)

@@ -142,7 +142,6 @@ class TrayIcon(QtGui.QSystemTrayIcon):
             result = self._doHandler.rename(dropletId, rd.result)
             self._checkResult("Rename", dropletName, result)
 
-
     def _resetRoot(self, idx):
         dropletName = self._dInfos[idx]['name']
         action = "reboot" if self._dInfos[idx]['status'] == 'active' else "power on"
@@ -155,8 +154,9 @@ class TrayIcon(QtGui.QSystemTrayIcon):
     def _openSSH(self, idx):
         userName = config.value('userName', "root")
         ipAddress = self._dInfos[idx]['ip_address']
-        command = "osascript -e 'tell application \"Terminal\" to do script \"ssh %s@%s\"'"
-        os.system(command % (userName, ipAddress))
+        command = config.sshCommand
+        command = command % (userName, ipAddress)
+        os.system(command)
 
     def _powerOn(self, idx):
         dropletName = self._dInfos[idx]['name']
@@ -257,7 +257,7 @@ class TrayIcon(QtGui.QSystemTrayIcon):
         return reply == QtGui.QMessageBox.Yes
 
     def _createDroplet(self):
-        os.system("open https://cloud.digitalocean.com/droplets/new")
+        os.system("%s https://cloud.digitalocean.com/droplets/new" % config.openCommand)
 
     def _settings(self):
         pd = PreferencesDialog(self._mainWindow)

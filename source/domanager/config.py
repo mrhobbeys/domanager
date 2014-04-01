@@ -6,6 +6,9 @@ class ConfigClass(object):
 
     version = "1.0"
 
+    sshCommand = "osascript -e 'tell application \"Terminal\" to activate do script \"ssh %s@%s\"'"
+    openCommand = "open"
+
     settings = QtCore.QSettings(QtCore.QSettings.NativeFormat,
                                 QtCore.QSettings.UserScope,
                                 "aoizora.org", "domanager")
