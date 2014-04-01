@@ -128,7 +128,11 @@ class TrayIcon(QtGui.QSystemTrayIcon):
             msg = "%s command to %s was sent successfully" % (commandName, dropletName)
             self._message(msg)
         else:
-            self._message(result['message'], error=True)
+            if 'pending' in result['message']:
+                msg = "%s is in pending stage. Please try again later" % dropletName
+            else:
+                msg = result['message']
+            self._message(msg, error=True)
 
     def _renameDroplet(self, idx):
         dropletName = self._dInfos[idx]['name']
@@ -244,16 +248,23 @@ class TrayIcon(QtGui.QSystemTrayIcon):
         clipboard.setMimeData(mimeData)
         QtGui.QApplication.processEvents()
 
+    def __messageBox(self, msg, mIcon):
+        mBox = QtGui.QMessageBox(self._mainWindow)
+        mBox.setWindowTitle("DO Manager")
+        mBox.setText(msg)
+        mBox.setWindowFlags(mBox.windowFlags() | Qt.WindowStaysOnTopHint)
+        mBox.setIcon(mIcon)
+        return mBox
+
     def _message(self, msg, error=False):
-        if error:
-            QtGui.QMessageBox.warning(self._mainWindow, "DO Manager", msg)
-        else:
-            QtGui.QMessageBox.information(self._mainWindow, "DO Manager", msg)
+        mIcon = QtGui.QMessageBox.Warning if error else QtGui.QMessageBox.Information
+        mBox = self.__messageBox(msg, mIcon)
+        mBox.exec_()
 
     def _question(self, msg):
-        reply = QtGui.QMessageBox.question(self._mainWindow, "DO Manager", msg,
-                                           QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
-        return reply == QtGui.QMessageBox.Yes
+        mBox = self.__messageBox(msg, QtGui.QMessageBox.Question)
+        mBox.setStandardButtons(mBox.Yes | mBox.No)
+        return mBox.exec_() == mBox.Yes
 
     def _createDroplet(self):
         os.system("%s https://cloud.digitalocean.com/droplets/new" % config.openCommand)
