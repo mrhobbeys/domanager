@@ -202,6 +202,11 @@ class TrayIcon(QtGui.QSystemTrayIcon):
             self._updateMenu()
 
     def _updateMenu(self):
+        menuVisible = False
+        if self._menu:
+            menuVisible = self._menu.isVisible()
+            self._menu.hide()
+
         self._menu = QtGui.QMenu(self._mainWindow)
 
         if not self._data:
@@ -252,7 +257,13 @@ class TrayIcon(QtGui.QSystemTrayIcon):
         self._menu.addSeparator()
         self._menu.addAction(self._quitAction)
 
-        self.setContextMenu(self._menu)
+        self.activated.connect(self._popupMenu)
+        if menuVisible:
+            self._popupMenu()
+
+    def _popupMenu(self):
+        rect = self.geometry()
+        self._menu.popup(QtCore.QPoint(rect.x(), rect.y()))
 
     def _ipToClipboard(self, idx):
         ipAddress = self._dInfos[idx]['ip_address']
