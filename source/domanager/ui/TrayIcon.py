@@ -22,6 +22,7 @@ class TrayIcon(QtGui.QSystemTrayIcon):
 
         self._data = []
         self._dInfos = []
+        self._menu = None
 
         self._quitAction = QtGui.QAction("Quit", self)
         self._quitAction.setIcon(self._icon("quit.png"))
