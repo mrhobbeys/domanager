@@ -128,8 +128,7 @@ class TrayIcon(QtGui.QSystemTrayIcon):
             msg = "%s command to %s was sent successfully" % (commandName, dropletName)
             self._message(msg)
         else:
-            msg = "Failed to send %s command to %s (%s)" % (dropletName, commandName.lower(), result['status'])
-            self._message(msg, error=True)
+            self._message(result['message'], error=True)
 
     def _renameDroplet(self, idx):
         dropletName = self._dInfos[idx]['name']
