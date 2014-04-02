@@ -198,7 +198,7 @@ class TrayIcon(QtGui.QSystemTrayIcon):
         if self._data != result:
             self._dInfos = []
             self._data = result
-            if 'droplets' in self._data:
+            if self._data and 'droplets' in self._data:
                 self._dInfos = self._data['droplets']
             self._updateMenu()
 
@@ -212,7 +212,7 @@ class TrayIcon(QtGui.QSystemTrayIcon):
 
         if not self._data:
             infoMsg = "Connecting..."
-            self.setIcon(self._icon("main_logo_gray.png"))
+            self.setIcon(self._icon("main_logo_gray_error.png"))
         elif "OK" in self._data['status']:
             infoMsg = "Connected"
             self.setIcon(self._icon("main_logo_gray.png"))

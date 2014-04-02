@@ -10,11 +10,11 @@ class DOHandler(object):
         clientId = config.value('clientId', "")
         apiKey = config.value('apiKey', "")
         request = request % (clientId, apiKey)
-        conn = httplib.HTTPSConnection(self._url)
-        conn.putrequest(method, request)
-        conn.endheaders()
-        response = conn.getresponse()
         try:
+            conn = httplib.HTTPSConnection(self._url)
+            conn.putrequest(method, request)
+            conn.endheaders()
+            response = conn.getresponse()
             return json.loads(response.read())
         except:
             return
