@@ -76,21 +76,21 @@ class TrayIcon(QtGui.QSystemTrayIcon):
         return QtGui.QIcon(rPath(filename))
 
     def _dropletMenu(self, idx):
-        dropletMenu = QtGui.QMenu(self._mainWindow)
+        dropletMenu = QtGui.QMenu(self._menu)
 
-        copyIPAction = QtGui.QAction("Copy IP to clipboard", dropletMenu)
+        copyIPAction = QtGui.QAction("Copy IP to clipboard", self._menu)
         copyIPAction.setIcon(self._icon("ip.png"))
         copyIPAction.triggered.connect(lambda y, x=idx: self._ipToClipboard(x))
 
-        resetRootAction = QtGui.QAction("Reset root password", dropletMenu)
+        resetRootAction = QtGui.QAction("Reset root password", self._menu)
         resetRootAction.setIcon(self._icon("password.png"))
         resetRootAction.triggered.connect(lambda y, x=idx: self._resetRoot(x))
 
-        renameDropletAction = QtGui.QAction("Rename", dropletMenu)
+        renameDropletAction = QtGui.QAction("Rename", self._menu)
         renameDropletAction.setIcon(self._icon("rename.png"))
         renameDropletAction.triggered.connect(lambda y, x=idx: self._renameDroplet(x))
 
-        destroyDropletAction = QtGui.QAction("Destroy", dropletMenu)
+        destroyDropletAction = QtGui.QAction("Destroy", self._menu)
         destroyDropletAction.setIcon(self._icon("destroy.png"))
         destroyDropletAction.triggered.connect(lambda y, x=idx: self._destroyDroplet(x))
 
@@ -98,15 +98,15 @@ class TrayIcon(QtGui.QSystemTrayIcon):
 
         if self._dInfos[idx]['status'] == 'active':
 
-            sshAction = QtGui.QAction("Open SSH connection", dropletMenu)
+            sshAction = QtGui.QAction("Open SSH connection", self._menu)
             sshAction.setIcon(self._icon("ssh.png"))
             sshAction.triggered.connect(lambda y, x=idx: self._openSSH(x))
 
-            rebootAction = QtGui.QAction("Power cycle", dropletMenu)
+            rebootAction = QtGui.QAction("Power cycle", self._menu)
             rebootAction.setIcon(self._icon("reboot.png"))
             rebootAction.triggered.connect(lambda y, x=idx: self._powerCycle(x))
 
-            shutDownAction = QtGui.QAction("Power Off", dropletMenu)
+            shutDownAction = QtGui.QAction("Power Off", self._menu)
             shutDownAction.setIcon(self._icon("shutdown.png"))
             shutDownAction.triggered.connect(lambda y, x=idx: self._powerOff(x))
 
@@ -118,7 +118,7 @@ class TrayIcon(QtGui.QSystemTrayIcon):
             dropletMenu.addAction(shutDownAction)
 
         else:
-            startAction = QtGui.QAction("Power On", dropletMenu)
+            startAction = QtGui.QAction("Power On", self._menu)
             startAction.setIcon(self._icon("start.png"))
             startAction.triggered.connect(lambda y, x=idx: self._powerOn(x))
 
@@ -207,12 +207,15 @@ class TrayIcon(QtGui.QSystemTrayIcon):
             if self._data and 'droplets' in self._data:
                 self._dInfos = self._data['droplets']
             self._updateMenu()
+        gc.collect()
 
     def _updateMenu(self):
         menuVisible = False
         if self._menu:
             menuVisible = self._menu.isVisible()
             self._menu.hide()
+            self._menu.setParent(None)
+            self._menu.deleteLater()
 
         self._menu = QtGui.QMenu(self._mainWindow)
 
