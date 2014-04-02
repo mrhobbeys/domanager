@@ -73,7 +73,8 @@ sys.path.append(os.path.abspath("."))
 check_call (buildApp)
 
 qtConf = "; Qt Configuration file\n[Paths]\nPlugins = Resources/qt_plugins"
-f = open(os.path.join(sourceDir, "Contents", "Resources", "qt.conf"), "wb")
+qtConfDir = os.path.join(sourceDir, "Contents", "Resources")
+f = open(os.path.join(qtConfDir, "qt.conf"), "wb")
 f.write(qtConf)
 f.close()
 
