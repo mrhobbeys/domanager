@@ -8,6 +8,7 @@ from domanager.core import DOHandler, UpdateThread
 from domanager.ui.PreferencesDialog import PreferencesDialog
 from domanager.ui.AboutDialog import AboutDialog
 from domanager.ui.RenameDialog import RenameDialog
+from domanager.ui.UpdateChecker import UpdateChecker
 
 class TrayIcon(QtGui.QSystemTrayIcon):
     def __init__(self, mWindow):
@@ -19,6 +20,8 @@ class TrayIcon(QtGui.QSystemTrayIcon):
         self._mainWindow.setWindowIcon(self._icon("main_logo_color.png"))
 
         self._doHandler = DOHandler()
+        self._updateChecker = UpdateChecker(self._mainWindow)
+        self._updateChecker.quitProgram.connect(self._quit)
 
         self._data = []
         self._dInfos = []
@@ -45,6 +48,7 @@ class TrayIcon(QtGui.QSystemTrayIcon):
 
         self._updateAction = QtGui.QAction("Check for update", self)
         self._updateAction.setIcon(self._icon("update.png"))
+        self._updateAction.triggered.connect(self._update)
 
         self._helpMenu = QtGui.QMenu(self._mainWindow)
         self._helpMenu.addAction(self._updateAction)
@@ -306,6 +310,9 @@ class TrayIcon(QtGui.QSystemTrayIcon):
         ad.showNormal()
         ad.activateWindow()
         ad.exec_()
+
+    def _update(self):
+        self._updateChecker.check()
 
     def _quit(self):
         sys.exit(0)
