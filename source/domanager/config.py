@@ -12,8 +12,8 @@ class ConfigClass(object):
     reportUrl = 'https://github.com/itohnobue/domanager/issues/new'
 
     updateURL = 'http://www.aoizora.org/domanager/download/mac/'
-    updateFileMask = 'DO Manager_(.+?).dmg'
-    updateFileTempl = 'DO Manager_%s.dmg'
+    updateFileMask = 'DO_Manager_(.+?).dmg'
+    updateFileTempl = 'DO_Manager_%s.dmg'
 
     settings = QtCore.QSettings(QtCore.QSettings.NativeFormat,
                                 QtCore.QSettings.UserScope,
