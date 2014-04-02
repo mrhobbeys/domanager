@@ -128,10 +128,7 @@ class TrayIcon(QtGui.QSystemTrayIcon):
         return dropletMenu
 
     def _checkResult(self, commandName, dropletName, result):
-        if result['status'] == 'OK':
-            msg = "%s command to %s was sent successfully" % (commandName, dropletName)
-            self._message(msg)
-        else:
+        if not 'OK' in result['status']:
             if 'pending' in result['message']:
                 msg = "%s is in pending stage. Please try again later" % dropletName
             else:
