@@ -8,7 +8,7 @@ sys.path.append(srcPath)
 from domanager.config import config
 
 # Preferences
-title = "DO Manager"
+title = "DO_Manager"
 appName = title
 sourceDir = os.path.join("dist", "%s.app" % title)
 backImgDir = os.path.join("/Volumes/%s" % title, ".background")
