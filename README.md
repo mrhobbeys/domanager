@@ -1,6 +1,6 @@
 # DO (DigitalOcean) Manager
 
-![DO Manager Icon](http://www.aoizora.org/domanager/main_logo_color.png)
+![DO Manager Icon](http://www.aoizora.org/domanager/main_logo.png)
 
 Simple DigitalOcean droplets manager for your system tray.
 
@@ -8,11 +8,11 @@ Simple DigitalOcean droplets manager for your system tray.
 
 ### Mac OS X
 
-![DO Manager Screen 1](http://www.aoizora.org/domanager/screenshot.png)
+![DO Manager Screen 1](http://www.aoizora.org/domanager/screen.png)
 
 Requirements: **Mac OS X 10.7+ 64-bit**
 
-Version 0.81 (beta): [Download here](http://aoizora.org/domanager/download/mac/)
+Version 0.81: [Download here](http://aoizora.org/domanager/download/mac/)
 
 ### Windows
 
