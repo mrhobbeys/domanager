@@ -15,7 +15,19 @@ DATA_FILES = [os.path.join("source", "domanager", "resources")]
 OPTIONS = {'argv_emulation': True,
            'iconfile': os.path.join("source", "domanager",
                                     "resources", "main_logo_color.icns"),
-           "qt_plugins": ["imageformats/*"], }
+           
+           "qt_plugins": ["imageformats/*"], 
+
+           "excludes": ['PyQt4.QtDesigner', 'PyQt4.QtNetwork', 'PyQt4.QtOpenGL', 'PyQt4.QtScript', 
+                        'PyQt4.QtSql', 'PyQt4.QtTest', 'PyQt4.QtWebKit', 'PyQt4.QtXml', 'PyQt4.phonon',
+                        '_gtkagg', '_tkagg', 'bsddb', 'curses', 'pywin.debugger',
+                        'pywin.debugger.dbgcon', 'pywin.dialogs',  'tcl', 'test', 'Tkconstants',
+                        'Tkinter', 'xml', 'pywinauto.tests', 'unittest',
+                        'pdb', 'dummy_thread', 'doctest', 'PIL',
+                        'BmpImagePlugin', 'GifImagePlugin', 'GimpGradientFile', 
+                        'GimpPaletteFile', 'JpegImagePlugin', 'PngImagePlugin', 'PpmImagePlugin', 
+                        'TiffImagePlugin', 'TiffTags', 'Image', 'ImageGrab', 'bz2', 'email' ],
+            }
 
 setup(
     name = "DO Manager",
