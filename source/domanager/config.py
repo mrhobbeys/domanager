@@ -6,7 +6,7 @@ class ConfigClass(object):
 
     version = "0.8"
 
-    sshCommand = "osascript -e 'tell application \"Terminal\" to activate do script \"ssh %s@%s\"'"
+    sshCommand = "osascript -e 'tell application \"Terminal\" to activate do script \"ssh -p %s %s@%s\"'"
     openCommand = "open"
 
     reportUrl = 'https://github.com/itohnobue/domanager/issues/new'

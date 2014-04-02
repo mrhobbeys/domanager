@@ -163,8 +163,9 @@ class TrayIcon(QtGui.QSystemTrayIcon):
     def _openSSH(self, idx):
         userName = config.value('userName', "root")
         ipAddress = self._dInfos[idx]['ip_address']
+        sshPort = config.value('sshPort', 22)
         command = config.sshCommand
-        command = command % (userName, ipAddress)
+        command = command % (sshPort, userName, ipAddress)
         os.system(command)
 
     def _powerOn(self, idx):

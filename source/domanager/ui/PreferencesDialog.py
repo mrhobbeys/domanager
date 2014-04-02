@@ -33,6 +33,13 @@ class PreferencesDialog(QtGui.QDialog):
         self._sshUserNameBox.setText(userName)
         self._sshUserNameBox.setMinimumWidth(250)
 
+        self._sshPortBox = QtGui.QLineEdit(self)
+        sshPort = config.value('sshPort', 22)
+        validator = QtGui.QRegExpValidator(QtGui.QIntValidator(1, 65535, self._sshPortBox))
+        self._sshPortBox.setValidator(validator)
+        self._sshPortBox.setText("%s" % sshPort)
+        self._sshPortBox.setMinimumWidth(250)
+
         self._formLayout = QtGui.QFormLayout()
         self._formLayout.setContentsMargins(5, 5, 5, 5)
         self._formLayout.addRow("Client ID: ", self._clientIDBox)
@@ -60,6 +67,7 @@ class PreferencesDialog(QtGui.QDialog):
         self._sshLayout = QtGui.QFormLayout()
         self._sshLayout.setContentsMargins(5, 5, 5, 5)
         self._sshLayout.addRow("SSH User: ", self._sshUserNameBox)
+        self._sshLayout.addRow("SSH Port: ", self._sshPortBox)
 
         self._sshWidget = QtGui.QWidget(self)
         self._sshWidget.setContentsMargins(0, 0, 0, 0)
@@ -81,9 +89,11 @@ class PreferencesDialog(QtGui.QDialog):
         clientId = self._clientIDBox.text()
         apiKey = self._apiKeyBox.text()
         userName = self._sshUserNameBox.text()
+        sshPort = self._sshPortBox.text()
         config.setValue('clientId', clientId)
         config.setValue('apiKey', apiKey)
         config.setValue('userName', userName)
+        config.setValue('sshPort', sshPort)
         self.close()
 
     def _icon(self, filename):
