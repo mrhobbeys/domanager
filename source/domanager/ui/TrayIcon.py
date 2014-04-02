@@ -67,6 +67,8 @@ class TrayIcon(QtGui.QSystemTrayIcon):
         clientId = config.value('clientId', "")
         apiKey = config.value('apiKey', "")
 
+        self.activated.connect(self._popupMenu)
+
         if not clientId or not apiKey:
             self._settings()
 
@@ -267,13 +269,15 @@ class TrayIcon(QtGui.QSystemTrayIcon):
         self._menu.addSeparator()
         self._menu.addAction(self._quitAction)
 
-        self.activated.connect(self._popupMenu)
         if menuVisible:
             self._popupMenu()
 
     def _popupMenu(self):
-        rect = self.geometry()
-        self._menu.popup(QtCore.QPoint(rect.x(), rect.y()))
+        if self._menu:
+            if self._menu.isVisible():
+                self._menu.hide()
+            rect = self.geometry()
+            self._menu.popup(QtCore.QPoint(rect.x(), rect.y()))
 
     def _ipToClipboard(self, idx):
         ipAddress = self._dInfos[idx]['ip_address']
