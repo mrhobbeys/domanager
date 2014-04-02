@@ -12,7 +12,7 @@ Simple DigitalOcean droplets manager for your system tray.
 
 Requirements: **Mac OS X 10.7+ 64-bit**
 
-Version 0.81: [Download here](http://aoizora.org/domanager/download/mac/)
+Last stable release: [Download here](http://aoizora.org/domanager/download/mac/)
 
 ### Windows
 
