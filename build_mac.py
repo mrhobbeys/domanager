@@ -16,6 +16,9 @@ approxSize = "50048k"
 dmgPath = os.path.join("dist", "domanager.dmg")
 version = config.version
 finalDmgPath = os.path.join("dist", "%s_%s.dmg" % (title, version))
+excludeFrameworks = ['QtMultimedia.framework', 'QtNetwork.framework', 'QtSql.framework',
+                     'QtSvg.framework', 'QtXml.framework', 'QtXmlPatterns.framework',
+                     'QtScript.framework', 'QtScriptTools.framework', 'QtDeclarative.framework']
 
 # Commands
 buildApp = [sys.executable, "build_pkg_mac.py",
@@ -73,6 +76,11 @@ qtConf = "; Qt Configuration file\n[Paths]\nPlugins = Resources/qt_plugins"
 f = open(os.path.join(sourceDir, "Contents", "Resources", "qt.conf"), "wb")
 f.write(qtConf)
 f.close()
+
+for frName in excludeFrameworks:
+    frPath = os.path.join(sourceDir, "Contents", "Frameworks", frName)
+    if os.path.exists(frPath):
+        shutil.rmtree(frPath)
 
 check_call (createDmg, shell=True)
 
