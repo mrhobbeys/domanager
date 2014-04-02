@@ -27,6 +27,8 @@ OPTIONS = {'argv_emulation': True,
                         'BmpImagePlugin', 'GifImagePlugin', 'GimpGradientFile', 
                         'GimpPaletteFile', 'JpegImagePlugin', 'PngImagePlugin', 'PpmImagePlugin', 
                         'TiffImagePlugin', 'TiffTags', 'Image', 'ImageGrab', 'bz2', 'email' ],
+
+            'plist': {'LSUIElement': True},
             }
 
 setup(
