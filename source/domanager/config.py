@@ -4,7 +4,7 @@ from PyQt4.QtCore import Qt
 
 class ConfigClass(object):
 
-    version = "0.8"
+    version = "0.81"
 
     sshCommand = "osascript -e 'tell application \"Terminal\" to activate do script \"ssh -p %s %s@%s\"'"
     openCommand = "open"
