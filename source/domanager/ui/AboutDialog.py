@@ -14,7 +14,7 @@ class AboutDialog(QtGui.QDialog):
 
         self._picLabel = QtGui.QLabel(self)
         self._picLabel.setAlignment(Qt.AlignCenter)
-        pmap = QtGui.QPixmap(rPath("main_logo_color.png"))
+        pmap = QtGui.QPixmap(rPath("main_logo_color_256.png"))
         self._picLabel.setPixmap(pmap)
 
         aboutTopText = "<qt>"
