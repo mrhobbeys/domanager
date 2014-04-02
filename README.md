@@ -1,1 +1,3 @@
-Digital Ocean Manager
+# Digital Ocean Manager
+
+DigitalOcean droplets manager
