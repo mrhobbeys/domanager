@@ -10,12 +10,12 @@ from domanager.config import config
 # Preferences
 title = "DO Manager"
 appName = title
-sourceDir = os.path.join("dist", "DO Manager.app")
+sourceDir = os.path.join("dist", "%s.app" % title)
 backImgDir = os.path.join("/Volumes/%s" % title, ".background")
 approxSize = "50048k"
 dmgPath = os.path.join("dist", "domanager.dmg")
 version = config.version
-finalDmgPath = os.path.join("dist", "DO_Manager_%s.dmg" % version)
+finalDmgPath = os.path.join("dist", "%s_%s.dmg" % (title, version))
 
 # Commands
 buildApp = [sys.executable, "build_pkg_mac.py",
@@ -68,6 +68,12 @@ compressRelease = """chmod -Rf go-w /Volumes/"%s"
 sys.path.append(os.path.abspath("."))
 
 check_call (buildApp)
+
+qtConf = "; Qt Configuration file\n[Paths]\nPlugins = Resources/qt_plugins"
+f = open(os.path.join(sourceDir, "Contents", "Resources", "qt.conf"), "wb")
+f.write(qtConf)
+f.close()
+
 check_call (createDmg, shell=True)
 
 result = Popen(getDevice, stdout=PIPE, shell=True)

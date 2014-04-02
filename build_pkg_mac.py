@@ -15,7 +15,7 @@ DATA_FILES = [os.path.join("source", "domanager", "resources")]
 OPTIONS = {'argv_emulation': True,
            'iconfile': os.path.join("source", "domanager",
                                     "resources", "main_logo_color.icns"),
-           'qt_plugins': 'imageformats'}
+           "qt_plugins": ["imageformats/*"], }
 
 setup(
     name = "DO Manager",
