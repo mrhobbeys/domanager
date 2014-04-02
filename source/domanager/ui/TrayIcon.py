@@ -77,10 +77,6 @@ class TrayIcon(QtGui.QSystemTrayIcon):
         copyIPAction.setIcon(self._icon("ip.png"))
         copyIPAction.triggered.connect(lambda y, x=idx: self._ipToClipboard(x))
 
-        sshAction = QtGui.QAction("Open SSH connection", dropletMenu)
-        sshAction.setIcon(self._icon("ssh.png"))
-        sshAction.triggered.connect(lambda y, x=idx: self._openSSH(x))
-
         resetRootAction = QtGui.QAction("Reset root password", dropletMenu)
         resetRootAction.setIcon(self._icon("password.png"))
         resetRootAction.triggered.connect(lambda y, x=idx: self._resetRoot(x))
@@ -94,12 +90,13 @@ class TrayIcon(QtGui.QSystemTrayIcon):
         destroyDropletAction.triggered.connect(lambda y, x=idx: self._destroyDroplet(x))
 
         dropletMenu.addAction(copyIPAction)
-        dropletMenu.addAction(sshAction)
-        dropletMenu.addSeparator()
-        dropletMenu.addAction(renameDropletAction)
-        dropletMenu.addAction(resetRootAction)
 
         if self._dInfos[idx]['status'] == 'active':
+
+            sshAction = QtGui.QAction("Open SSH connection", dropletMenu)
+            sshAction.setIcon(self._icon("ssh.png"))
+            sshAction.triggered.connect(lambda y, x=idx: self._openSSH(x))
+
             rebootAction = QtGui.QAction("Power cycle", dropletMenu)
             rebootAction.setIcon(self._icon("reboot.png"))
             rebootAction.triggered.connect(lambda y, x=idx: self._powerCycle(x))
@@ -108,6 +105,10 @@ class TrayIcon(QtGui.QSystemTrayIcon):
             shutDownAction.setIcon(self._icon("shutdown.png"))
             shutDownAction.triggered.connect(lambda y, x=idx: self._powerOff(x))
 
+            dropletMenu.addAction(sshAction)
+            dropletMenu.addSeparator()
+            dropletMenu.addAction(renameDropletAction)
+            dropletMenu.addAction(resetRootAction)
             dropletMenu.addAction(rebootAction)
             dropletMenu.addAction(shutDownAction)
 
@@ -116,6 +117,9 @@ class TrayIcon(QtGui.QSystemTrayIcon):
             startAction.setIcon(self._icon("start.png"))
             startAction.triggered.connect(lambda y, x=idx: self._powerOn(x))
 
+            dropletMenu.addSeparator()
+            dropletMenu.addAction(renameDropletAction)
+            dropletMenu.addAction(resetRootAction)
             dropletMenu.addAction(startAction)
 
         dropletMenu.addSeparator()
