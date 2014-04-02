@@ -45,6 +45,7 @@ class TrayIcon(QtGui.QSystemTrayIcon):
 
         self._bugAction = QtGui.QAction("Report bug/request", self)
         self._bugAction.setIcon(self._icon("bug.png"))
+        self._bugAction.triggered.connect(self._report)
 
         self._updateAction = QtGui.QAction("Check for update", self)
         self._updateAction.setIcon(self._icon("update.png"))
@@ -310,6 +311,9 @@ class TrayIcon(QtGui.QSystemTrayIcon):
         ad.showNormal()
         ad.activateWindow()
         ad.exec_()
+
+    def _report(self):
+        os.system("%s %s" % (config.openCommand, config.reportUrl))
 
     def _update(self):
         self._updateChecker.check()

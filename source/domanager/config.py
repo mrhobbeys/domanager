@@ -9,6 +9,8 @@ class ConfigClass(object):
     sshCommand = "osascript -e 'tell application \"Terminal\" to activate do script \"ssh %s@%s\"'"
     openCommand = "open"
 
+    reportUrl = 'https://github.com/itohnobue/domanager/issues/new'
+
     updateURL = 'http://www.aoizora.org/domanager/download/mac/'
     updateFileMask = 'DO Manager_(.+?).dmg'
     updateFileTempl = 'DO Manager_%s.dmg'
