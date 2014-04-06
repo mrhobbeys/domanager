@@ -15,12 +15,14 @@ class ConfigClass(object):
         updateFileMask = 'DO_Manager_(.+?)_setup.exe'
         updateFileTempl = 'DO_Manager_%s_setup.exe'
         sshCommand = rPath('putty.exe') + " \"%s@%s:%s\""
+        mainIcon = "main_logo_color_256.png"
     else:
         openCommand = "open"
         sshCommand = "osascript -e 'tell application \"Terminal\" to activate do script \"ssh -p %s %s@%s\"'"
         updateURL = 'http://www.aoizora.org/domanager/download/mac/'
         updateFileMask = 'DO_Manager_(.+?).dmg'
         updateFileTempl = 'DO_Manager_%s.dmg'
+        mainIcon = "main_logo_gray.png"
 
     reportUrl = 'https://github.com/itohnobue/domanager/issues/new'
 

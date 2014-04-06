@@ -15,7 +15,7 @@ from domanager.ui.CustomMenu import CustomMenu
 class TrayIcon(QtGui.QSystemTrayIcon):
     def __init__(self, mWindow):
         super(TrayIcon, self).__init__(mWindow)
-        self.setIcon(self._icon("main_logo_gray.png"))
+        self.setIcon(self._icon(config.mainIcon))
         self.setVisible(True)
 
         self._mainWindow = mWindow
@@ -233,7 +233,7 @@ class TrayIcon(QtGui.QSystemTrayIcon):
             self.setIcon(self._icon("main_logo_gray_error.png"))
         elif "OK" in self._data['status']:
             infoMsg = "Connected"
-            self.setIcon(self._icon("main_logo_gray.png"))
+            self.setIcon(self._icon(config.mainIcon))
         elif "ERROR" in self._data['status']:
             infoMsg = self._data['message']
             self.setIcon(self._icon("main_logo_gray_error.png"))
