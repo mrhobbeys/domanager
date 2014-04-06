@@ -89,13 +89,13 @@ Section "Start menu shortcuts" s2
 
   CreateDirectory "$SMPROGRAMS\APP_NAME"
   CreateShortCut  "$SMPROGRAMS\APP_NAME\Uninstall APP_NAME.lnk" "$INSTDIR\uninstall.exe" "" "$INSTDIR\uninstall.exe" 0
-  CreateShortCut  "$SMPROGRAMS\APP_NAME\APP_NAME.lnk" "$INSTDIR\domanager.exe" "" "$INSTDIR\\resources\icons\main_logo_color.ico" 0
+  CreateShortCut  "$SMPROGRAMS\APP_NAME\APP_NAME.lnk" "$INSTDIR\domanager.exe" "" "$INSTDIR\\resources\main_logo_color.ico" 0
 
 SectionEnd
 
 Section "Desktop shortcut" s3
 
-  CreateShortCut "$DESKTOP\APP_NAME.lnk" "$INSTDIR\domanager.exe" "" "$INSTDIR\\resources\icons\main_logo_color.ico" 0
+  CreateShortCut "$DESKTOP\APP_NAME.lnk" "$INSTDIR\domanager.exe" "" "$INSTDIR\\resources\main_logo_color.ico" 0
 
 SectionEnd
 
