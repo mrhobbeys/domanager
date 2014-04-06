@@ -1,6 +1,7 @@
 import sys, os, subprocess, gc
 from PyQt4 import QtGui, QtCore
 from PyQt4.QtCore import Qt
+from sys import platform
 
 from domanager.config import config
 from domanager.resources import rPath
@@ -9,6 +10,7 @@ from domanager.ui.PreferencesDialog import PreferencesDialog
 from domanager.ui.AboutDialog import AboutDialog
 from domanager.ui.RenameDialog import RenameDialog
 from domanager.ui.UpdateChecker import UpdateChecker
+from domanager.ui.CustomMenu import CustomMenu
 
 class TrayIcon(QtGui.QSystemTrayIcon):
     def __init__(self, mWindow):
@@ -78,7 +80,7 @@ class TrayIcon(QtGui.QSystemTrayIcon):
         return QtGui.QIcon(rPath(filename))
 
     def _dropletMenu(self, idx):
-        dropletMenu = QtGui.QMenu(self._menu)
+        dropletMenu = QtGui.QMenu(self._mainWindow)
 
         copyIPAction = QtGui.QAction("Copy IP to clipboard", self._menu)
         copyIPAction.setIcon(self._icon("ip.png"))
@@ -167,8 +169,13 @@ class TrayIcon(QtGui.QSystemTrayIcon):
         ipAddress = self._dInfos[idx]['ip_address']
         sshPort = config.value('sshPort', 22)
         command = config.sshCommand
-        command = command % (sshPort, userName, ipAddress)
-        os.system(command)
+        if platform == "win32":
+            command = command % (userName, ipAddress, sshPort)
+            DETACHED_PROCESS = 0x00000008
+            subprocess.Popen(command.split(' '), creationflags=DETACHED_PROCESS)
+        else:
+            command = command % (sshPort, userName, ipAddress)
+            os.system(command)
 
     def _powerOn(self, idx):
         dropletName = self._dInfos[idx]['name']
@@ -219,7 +226,7 @@ class TrayIcon(QtGui.QSystemTrayIcon):
             self._menu.setParent(None)
             self._menu.deleteLater()
 
-        self._menu = QtGui.QMenu(self._mainWindow)
+        self._menu = CustomMenu()
 
         if not self._data:
             infoMsg = "Connecting..."
@@ -268,6 +275,9 @@ class TrayIcon(QtGui.QSystemTrayIcon):
         self._menu.addAction(self._helpAction)
         self._menu.addSeparator()
         self._menu.addAction(self._quitAction)
+
+        if platform == 'win32':
+            self.setContextMenu(self._menu)
 
         if menuVisible:
             self._popupMenu()
@@ -327,4 +337,4 @@ class TrayIcon(QtGui.QSystemTrayIcon):
         self._updateChecker.check()
 
     def _quit(self):
-        sys.exit(0)
+        QtGui.QApplication.quit()
