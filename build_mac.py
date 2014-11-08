@@ -1,6 +1,7 @@
 import sys, os, shutil
 from time import sleep
 from subprocess import check_call, Popen, PIPE
+from plistlib import readPlist, writePlist
 
 srcPath = os.path.abspath(os.path.join("source"))
 sys.path.append(srcPath)
@@ -13,6 +14,7 @@ appName = title
 sourceDir = os.path.join("dist", "%s.app" % title)
 approxSize = "70048k"
 dmgPath = os.path.join("dist", "domanager.dmg")
+pListPath = os.path.join(sourceDir, "Contents", "Info.plist")
 version = config.version
 finalDmgPath = os.path.join("dist", "%s_%s.dmg" % (title, version))
 
@@ -49,6 +51,12 @@ sys.path.append(os.path.abspath("."))
 
 print 'Building application...'
 check_call(buildApp)
+
+print 'Tweaking pList.info file...'
+pList = readPlist(pListPath)
+pList['NSPrincipalClass'] = 'NSApplication'
+pList['NSHighResolutionCapable'] = 'True'
+writePlist(pList, pListPath)
 
 if not os.path.exists(tempPath):
     os.makedirs(tempPath)
