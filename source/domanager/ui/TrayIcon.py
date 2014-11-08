@@ -283,9 +283,6 @@ class TrayIcon(QtWidgets.QSystemTrayIcon):
         self._menu.addSeparator()
         self._menu.addAction(self._quitAction)
 
-        if platform == 'win32':
-            self.setContextMenu(self._menu)
-
         if menuVisible:
             self._popupMenu()
 
