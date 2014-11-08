@@ -1,18 +1,18 @@
 import os
-from PyQt4 import QtGui, QtCore
-from PyQt4.QtCore import Qt
+from PyQt5 import QtGui, QtCore, QtWidgets
+from PyQt5.QtCore import Qt
 
 from domanager.resources import rPath
 from domanager.config import config
 
-class AboutDialog(QtGui.QDialog):
+class AboutDialog(QtWidgets.QDialog):
     def __init__(self, parent=None):
         super(AboutDialog, self).__init__(parent)
         self.setWindowTitle("About DO Manager")
         self.setWindowIcon(self._icon("about.png"))
         self.setWindowFlags(self.windowFlags() | Qt.WindowStaysOnTopHint)
 
-        self._picLabel = QtGui.QLabel(self)
+        self._picLabel = QtWidgets.QLabel(self)
         self._picLabel.setAlignment(Qt.AlignCenter)
         pmap = QtGui.QPixmap(rPath("main_logo_color_256.png"))
         self._picLabel.setPixmap(pmap)
@@ -28,16 +28,16 @@ class AboutDialog(QtGui.QDialog):
         aboutBottomText += "made by <a href=\"link\">Itoh Nobue (Artur M.)</a>"
         aboutBottomText += "</qt>"
 
-        self._aboutBoxTop = QtGui.QLabel(self)
+        self._aboutBoxTop = QtWidgets.QLabel(self)
         self._aboutBoxTop.setAlignment(Qt.AlignCenter)
         self._aboutBoxTop.setText(aboutTopText)
 
-        self._aboutBoxBottom = QtGui.QLabel(self)
+        self._aboutBoxBottom = QtWidgets.QLabel(self)
         self._aboutBoxBottom.setAlignment(Qt.AlignCenter)
         self._aboutBoxBottom.setText(aboutBottomText)
         self._aboutBoxBottom.linkActivated.connect(self._openInfo)
 
-        self._layout = QtGui.QVBoxLayout(self)
+        self._layout = QtWidgets.QVBoxLayout(self)
         self._layout.addWidget(self._aboutBoxTop)
         self._layout.addWidget(self._picLabel)
         self._layout.addWidget(self._aboutBoxBottom)

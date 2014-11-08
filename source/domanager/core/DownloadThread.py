@@ -1,7 +1,7 @@
 
 import urllib2, os, shutil
 import logging, tempfile
-from PyQt4 import QtCore
+from PyQt5 import QtCore
 
 from domanager.config import config
 

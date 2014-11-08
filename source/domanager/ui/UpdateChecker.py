@@ -1,7 +1,7 @@
 
 import urllib2, re, os, subprocess
-from PyQt4 import QtGui, QtCore
-from PyQt4.QtCore import Qt
+from PyQt5 import QtGui, QtCore, QtWidgets
+from PyQt5.QtCore import Qt
 
 from domanager.resources import rPath
 from domanager.config import config
@@ -22,7 +22,7 @@ class UpdateChecker(QtCore.QObject):
         return QtGui.QIcon(rPath(filename))
 
     def __messageBox(self, msg, mIcon):
-        mBox = QtGui.QMessageBox(self.parent())
+        mBox = QtWidgets.QMessageBox(self.parent())
         mBox.setWindowTitle("DO Manager")
         mBox.setText(msg)
         mBox.setWindowFlags(mBox.windowFlags() | Qt.WindowStaysOnTopHint)
@@ -31,11 +31,11 @@ class UpdateChecker(QtCore.QObject):
 
     def _dialog(self, msg, question=False):
         if question:
-            mBox = self.__messageBox(msg, QtGui.QMessageBox.Question)
+            mBox = self.__messageBox(msg, QtWidgets.QMessageBox.Question)
             mBox.setStandardButtons(mBox.Yes | mBox.No)
             return mBox.exec_() == mBox.Yes
         else:
-            mBox = self.__messageBox(msg, QtGui.QMessageBox.Information)
+            mBox = self.__messageBox(msg, QtWidgets.QMessageBox.Information)
             mBox.exec_()
 
     def _onError(self):

@@ -1,6 +1,6 @@
 import sys, os, subprocess, gc
-from PyQt4 import QtGui, QtCore
-from PyQt4.QtCore import Qt
+from PyQt5 import QtGui, QtCore, QtWidgets
+from PyQt5.QtCore import Qt
 from sys import platform
 
 from domanager.config import config
@@ -12,7 +12,7 @@ from domanager.ui.RenameDialog import RenameDialog
 from domanager.ui.UpdateChecker import UpdateChecker
 from domanager.ui.CustomMenu import CustomMenu
 
-class TrayIcon(QtGui.QSystemTrayIcon):
+class TrayIcon(QtWidgets.QSystemTrayIcon):
     def __init__(self, mWindow):
         super(TrayIcon, self).__init__(mWindow)
         self.setIcon(self._icon(config.mainIcon))
@@ -29,36 +29,36 @@ class TrayIcon(QtGui.QSystemTrayIcon):
         self._dInfos = []
         self._menu = None
 
-        self._quitAction = QtGui.QAction("Quit", self)
+        self._quitAction = QtWidgets.QAction("Quit", self)
         self._quitAction.setIcon(self._icon("quit.png"))
         self._quitAction.triggered.connect(self._quit)
 
-        self._aboutAction = QtGui.QAction("About", self)
+        self._aboutAction = QtWidgets.QAction("About", self)
         self._aboutAction.setIcon(self._icon("about.png"))
         self._aboutAction.triggered.connect(self._about)
 
-        self._settingsAction = QtGui.QAction("Preferences", self)
+        self._settingsAction = QtWidgets.QAction("Preferences", self)
         self._settingsAction.setIcon(self._icon("settings.png"))
         self._settingsAction.triggered.connect(self._settings)
 
-        self._createAction = QtGui.QAction("Create droplet (web)", self)
+        self._createAction = QtWidgets.QAction("Create droplet (web)", self)
         self._createAction.setIcon(self._icon("create.png"))
         self._createAction.triggered.connect(self._createDroplet)
 
-        self._bugAction = QtGui.QAction("Report bug/request", self)
+        self._bugAction = QtWidgets.QAction("Report bug/request", self)
         self._bugAction.setIcon(self._icon("bug.png"))
         self._bugAction.triggered.connect(self._report)
 
-        self._updateAction = QtGui.QAction("Check for update", self)
+        self._updateAction = QtWidgets.QAction("Check for update", self)
         self._updateAction.setIcon(self._icon("update.png"))
         self._updateAction.triggered.connect(self._update)
 
-        self._helpMenu = QtGui.QMenu(self._mainWindow)
+        self._helpMenu = QtWidgets.QMenu(self._mainWindow)
         self._helpMenu.addAction(self._updateAction)
         self._helpMenu.addAction(self._bugAction)
         self._helpMenu.addAction(self._aboutAction)
 
-        self._helpAction = QtGui.QAction("Help", self)
+        self._helpAction = QtWidgets.QAction("Help", self)
         self._helpAction.setIcon(self._icon("help.png"))
         self._helpAction.setMenu(self._helpMenu)
 
@@ -80,21 +80,21 @@ class TrayIcon(QtGui.QSystemTrayIcon):
         return QtGui.QIcon(rPath(filename))
 
     def _dropletMenu(self, idx):
-        dropletMenu = QtGui.QMenu(self._mainWindow)
+        dropletMenu = QtWidgets.QMenu(self._mainWindow)
 
-        copyIPAction = QtGui.QAction("Copy IP to clipboard", self._menu)
+        copyIPAction = QtWidgets.QAction("Copy IP to clipboard", self._menu)
         copyIPAction.setIcon(self._icon("ip.png"))
         copyIPAction.triggered.connect(lambda y, x=idx: self._ipToClipboard(x))
 
-        resetRootAction = QtGui.QAction("Reset root password", self._menu)
+        resetRootAction = QtWidgets.QAction("Reset root password", self._menu)
         resetRootAction.setIcon(self._icon("password.png"))
         resetRootAction.triggered.connect(lambda y, x=idx: self._resetRoot(x))
 
-        renameDropletAction = QtGui.QAction("Rename", self._menu)
+        renameDropletAction = QtWidgets.QAction("Rename", self._menu)
         renameDropletAction.setIcon(self._icon("rename.png"))
         renameDropletAction.triggered.connect(lambda y, x=idx: self._renameDroplet(x))
 
-        destroyDropletAction = QtGui.QAction("Destroy", self._menu)
+        destroyDropletAction = QtWidgets.QAction("Destroy", self._menu)
         destroyDropletAction.setIcon(self._icon("destroy.png"))
         destroyDropletAction.triggered.connect(lambda y, x=idx: self._destroyDroplet(x))
 
@@ -102,15 +102,15 @@ class TrayIcon(QtGui.QSystemTrayIcon):
 
         if self._dInfos[idx]['status'] == 'active':
 
-            sshAction = QtGui.QAction("Open SSH connection", self._menu)
+            sshAction = QtWidgets.QAction("Open SSH connection", self._menu)
             sshAction.setIcon(self._icon("ssh.png"))
             sshAction.triggered.connect(lambda y, x=idx: self._openSSH(x))
 
-            rebootAction = QtGui.QAction("Power cycle", self._menu)
+            rebootAction = QtWidgets.QAction("Power cycle", self._menu)
             rebootAction.setIcon(self._icon("reboot.png"))
             rebootAction.triggered.connect(lambda y, x=idx: self._powerCycle(x))
 
-            shutDownAction = QtGui.QAction("Power Off", self._menu)
+            shutDownAction = QtWidgets.QAction("Power Off", self._menu)
             shutDownAction.setIcon(self._icon("shutdown.png"))
             shutDownAction.triggered.connect(lambda y, x=idx: self._powerOff(x))
 
@@ -122,7 +122,7 @@ class TrayIcon(QtGui.QSystemTrayIcon):
             dropletMenu.addAction(shutDownAction)
 
         else:
-            startAction = QtGui.QAction("Power On", self._menu)
+            startAction = QtWidgets.QAction("Power On", self._menu)
             startAction.setIcon(self._icon("start.png"))
             startAction.triggered.connect(lambda y, x=idx: self._powerOn(x))
 
@@ -241,7 +241,7 @@ class TrayIcon(QtGui.QSystemTrayIcon):
             infoMsg = self._data['status']
             self.setIcon(self._icon("main_logo_gray_error.png"))
 
-        infoAction = QtGui.QAction("  Status: %s" % infoMsg, self._menu)
+        infoAction = QtWidgets.QAction("  Status: %s" % infoMsg, self._menu)
         infoAction.setEnabled(False)
 
         self._menu.addAction(infoAction)
@@ -249,7 +249,7 @@ class TrayIcon(QtGui.QSystemTrayIcon):
 
         if len(self._dInfos) > 0:
             for idx, dInfo in enumerate(self._dInfos):
-                dropletAction = QtGui.QAction(dInfo['name'], self._menu)
+                dropletAction = QtWidgets.QAction(dInfo['name'], self._menu)
 
                 if dInfo['status'] == 'active':
                     if dInfo['locked']:
@@ -291,14 +291,14 @@ class TrayIcon(QtGui.QSystemTrayIcon):
 
     def _ipToClipboard(self, idx):
         ipAddress = self._dInfos[idx]['ip_address']
-        clipboard = QtGui.QApplication.clipboard()
+        clipboard = QtWidgets.QApplication.clipboard()
         mimeData = QtCore.QMimeData()
         mimeData.setText(ipAddress)
         clipboard.setMimeData(mimeData)
-        QtGui.QApplication.processEvents()
+        QtWidgets.QApplication.processEvents()
 
     def __messageBox(self, msg, mIcon):
-        mBox = QtGui.QMessageBox(self._mainWindow)
+        mBox = QtWidgets.QMessageBox(self._mainWindow)
         mBox.setWindowTitle("DO Manager")
         mBox.setText(msg)
         mBox.setWindowFlags(mBox.windowFlags() | Qt.WindowStaysOnTopHint)
@@ -306,12 +306,12 @@ class TrayIcon(QtGui.QSystemTrayIcon):
         return mBox
 
     def _message(self, msg, error=False):
-        mIcon = QtGui.QMessageBox.Warning if error else QtGui.QMessageBox.Information
+        mIcon = QtWidgets.QMessageBox.Warning if error else QtWidgets.QMessageBox.Information
         mBox = self.__messageBox(msg, mIcon)
         mBox.exec_()
 
     def _question(self, msg):
-        mBox = self.__messageBox(msg, QtGui.QMessageBox.Question)
+        mBox = self.__messageBox(msg, QtWidgets.QMessageBox.Question)
         mBox.setStandardButtons(mBox.Yes | mBox.No)
         return mBox.exec_() == mBox.Yes
 
@@ -337,4 +337,4 @@ class TrayIcon(QtGui.QSystemTrayIcon):
         self._updateChecker.check()
 
     def _quit(self):
-        QtGui.QApplication.quit()
+        QtWidgets.QApplication.quit()

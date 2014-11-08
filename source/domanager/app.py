@@ -1,11 +1,11 @@
 import sys
-from PyQt4 import QtGui
+from PyQt5 import QtWidgets
 
 from domanager.ui import TrayIcon
 
 def start():
-    app = QtGui.QApplication([])
-    QtGui.QApplication.setQuitOnLastWindowClosed(False)
-    mWindow = QtGui.QMainWindow()
+    app = QtWidgets.QApplication([])
+    QtWidgets.QApplication.setQuitOnLastWindowClosed(False)
+    mWindow = QtWidgets.QMainWindow()
     doIcon = TrayIcon(mWindow)
     sys.exit(app.exec_())

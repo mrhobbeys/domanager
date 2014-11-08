@@ -1,13 +1,13 @@
 
-from PyQt4 import QtGui, QtCore
-from PyQt4.QtCore import Qt
+from PyQt5 import QtGui, QtCore, QtWidgets
+from PyQt5.QtCore import Qt
 from sys import platform
 
 from domanager.resources import rPath
 
 class ConfigClass(object):
 
-    version = "0.82"
+    version = "0.83"
 
     if platform == 'win32':
         openCommand = "start"

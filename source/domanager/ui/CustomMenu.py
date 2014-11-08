@@ -1,7 +1,7 @@
-from PyQt4 import QtGui, QtCore
-from PyQt4.QtCore import Qt
+from PyQt5 import QtGui, QtCore, QtWidgets
+from PyQt5.QtCore import Qt
 
-class CustomMenu(QtGui.QMenu):
+class CustomMenu(QtWidgets.QMenu):
     def __init__(self, parent=None):
         super(CustomMenu, self).__init__(parent)
         self.setFocus(Qt.MouseFocusReason)

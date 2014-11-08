@@ -1,6 +1,6 @@
 
 from time import sleep
-from PyQt4 import QtCore
+from PyQt5 import QtCore
 
 from domanager.core import DOHandler
 
