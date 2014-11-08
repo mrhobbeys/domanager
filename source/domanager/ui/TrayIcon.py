@@ -137,12 +137,13 @@ class TrayIcon(QtWidgets.QSystemTrayIcon):
         return dropletMenu
 
     def _checkResult(self, commandName, dropletName, result):
-        if not 'OK' in result['status']:
-            if 'pending' in result['message']:
-                msg = "%s is in pending stage. Please try again later" % dropletName
-            else:
-                msg = result['message']
-            self._message(msg, error=True)
+        if result['status'] != "OK":
+            if 'message' in result:
+                if 'pending' in result['message']:
+                    msg = "%s is in pending stage. Please try again later" % dropletName
+                else:
+                    msg = result['message']
+                self._message(msg)
 
     def _renameDroplet(self, idx):
         dropletName = self._dInfos[idx]['name']
@@ -221,6 +222,12 @@ class TrayIcon(QtWidgets.QSystemTrayIcon):
     def _updateMenu(self):
         menuVisible = False
         if self._menu:
+            self._menu.removeAction(self._createAction)
+            self._menu.removeAction(self._settingsAction)
+            self._menu.removeAction(self._quitAction)
+            self._menu.removeAction(self._aboutAction)
+            self._menu.removeAction(self._updateAction)
+            self._menu.removeAction(self._helpAction)
             menuVisible = self._menu.isVisible()
             self._menu.hide()
             self._menu.setParent(None)
@@ -306,9 +313,7 @@ class TrayIcon(QtWidgets.QSystemTrayIcon):
         return mBox
 
     def _message(self, msg, error=False):
-        mIcon = QtWidgets.QMessageBox.Warning if error else QtWidgets.QMessageBox.Information
-        mBox = self.__messageBox(msg, mIcon)
-        mBox.exec_()
+        self.showMessage("DO Manager", msg)
 
     def _question(self, msg):
         mBox = self.__messageBox(msg, QtWidgets.QMessageBox.Question)
