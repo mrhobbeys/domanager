@@ -1,7 +1,4 @@
 import os, shutil, logging
-import psutil
-import enchant
-import smtplib, email
 from distutils.dir_util import copy_tree
 
 from cx_Freeze import setup, Executable
@@ -22,8 +19,12 @@ for f in folders_to_copy:
     fPath = os.path.join(distDir, os.path.basename(f))
     copy_tree(f, fPath)
 
-pluginsDir = "C:\Python27_x32\lib\site-packages\PyQt4\plugins\imageformats"
-copy_tree(os.path.abspath(pluginsDir), os.path.join(distDir, 'imageformats'))
+# Qt plugins
+imPluginsDir = "C:\Qt-5.3.2\plugins\imageformats"
+copy_tree(os.path.abspath(imPluginsDir), os.path.join(distDir, 'imageformats'))
+
+plPluginsDir = "C:\Qt-5.3.2\plugins\platforms"
+copy_tree(os.path.abspath(plPluginsDir), os.path.join(distDir, 'platforms'))
 
 GUI2Exe_Target_1 =  Executable(
         script                = "run.py",
@@ -46,13 +47,11 @@ setup(
     options     = {
         "build_exe": {
             "packages": [
-                'PyQt4.QtCore',
-                'PyQt4.QtGui',
-                'sip'
+                'PyQt5.QtCore',
+                'PyQt5.QtGui',
+                'PyQt5.QtWidgets',
             ],
             "excludes": [
-                'PyQt4.QtDesigner', 'PyQt4.QtNetwork', 'PyQt4.QtOpenGL', 'PyQt4.QtScript',
-                'PyQt4.QtSql', 'PyQt4.QtTest', 'PyQt4.QtWebKit', 'PyQt4.QtXml', 'PyQt4.phonon',
                 '_gtkagg', '_tkagg', 'bsddb', 'curses', 'pywin.debugger',
                 'pywin.debugger.dbgcon', 'pywin.dialogs', 'QtMultimedia',
                 'QtNetwork', 'QtNetwork4', 'QtWebKit', 'tcl', 'test', 'Tkconstants',
@@ -63,7 +62,7 @@ setup(
                 'TiffImagePlugin', 'TiffTags', 'Image', 'ImageGrab', 'bz2'
             ],
             "path":          [],
-            "includes":      ['PyQt4', 'sip'],
+            "includes":      ['PyQt5', 'sip'],
             "include_files": [],
         }
     },
