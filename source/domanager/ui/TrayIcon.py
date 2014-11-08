@@ -339,4 +339,7 @@ class TrayIcon(QtWidgets.QSystemTrayIcon):
         self._updateChecker.check()
 
     def _quit(self):
+        if sys.platform == "win32":
+            self.hide()
+            QtWidgets.QApplication.processEvents()
         QtWidgets.QApplication.quit()
