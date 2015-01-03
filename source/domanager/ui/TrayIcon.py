@@ -292,6 +292,7 @@ class TrayIcon(QtWidgets.QSystemTrayIcon):
                 self._menu.hide()
             rect = self.geometry()
             self._menu.popup(QtCore.QPoint(rect.x(), rect.y()))
+            self._menu.activateWindow()
 
     def _ipToClipboard(self, idx):
         ipAddress = self._dInfos[idx]['ip_address']
