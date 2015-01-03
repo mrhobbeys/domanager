@@ -44,8 +44,8 @@ class UpdateChecker(QtCore.QObject):
         msg += "Please try again later."
         self._dialog(msg)
 
-    def check(self):
-        if self._dDialog:
+    def check(self, silent):
+        if not silent and self._dDialog:
             self._dDialog.activateWindow()
             self._dDialog.showNormal()
         else:
@@ -63,11 +63,14 @@ class UpdateChecker(QtCore.QObject):
                             self._fName = os.path.join(os.path.expanduser("~/Downloads"), self._fName)
                             self._download(config.updateURL, self._fName, newVersion)
                     else:
-                        self._dialog('Your version is up-to-date (%s)' % config.version)
+                        if not silent:
+                            self._dialog('Your version is up-to-date (%s)' % config.version)
                 else:
-                    self._dialog('Your version is up-to-date (%s)' % config.version)
+                    if not silent:
+                        self._dialog('Your version is up-to-date (%s)' % config.version)
             except:
-                self._dialog("Can't connect to update server")
+                if not silent:
+                    self._dialog("Can't connect to update server")
 
     def _download(self, url, fName, version):
         self._dDialog = DownloadDialog(version, self.parent())

@@ -51,7 +51,7 @@ class TrayIcon(QtWidgets.QSystemTrayIcon):
 
         self._updateAction = QtWidgets.QAction("Check for update", self)
         self._updateAction.setIcon(self._icon("update.png"))
-        self._updateAction.triggered.connect(self._update)
+        self._updateAction.triggered.connect(self.update)
 
         self._helpMenu = QtWidgets.QMenu(self._mainWindow)
         self._helpMenu.addAction(self._updateAction)
@@ -335,8 +335,8 @@ class TrayIcon(QtWidgets.QSystemTrayIcon):
     def _report(self):
         os.system("%s %s" % (config.openCommand, config.reportUrl))
 
-    def _update(self):
-        self._updateChecker.check()
+    def update(self, silent=False):
+        self._updateChecker.check(silent)
 
     def _quit(self):
         if sys.platform == "win32":

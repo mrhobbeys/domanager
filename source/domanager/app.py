@@ -8,4 +8,5 @@ def start():
     QtWidgets.QApplication.setQuitOnLastWindowClosed(False)
     mWindow = QtWidgets.QMainWindow()
     doIcon = TrayIcon(mWindow)
+    doIcon.update(True)
     sys.exit(app.exec_())
